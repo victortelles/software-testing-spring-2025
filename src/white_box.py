@@ -6,6 +6,7 @@ White-box code examples.
 import re
 
 
+# 0.1
 def is_even(num):
     """
     Checks if a number is even.
@@ -13,6 +14,7 @@ def is_even(num):
     return num % 2 == 0
 
 
+# 0.2
 def divide(a, b):
     """
     Simple division function.
@@ -23,6 +25,7 @@ def divide(a, b):
     return result
 
 
+# 0.3
 def get_grade(score):
     """
     Grade function.
@@ -38,6 +41,7 @@ def get_grade(score):
     return grade
 
 
+# 0.4
 def is_triangle(a, b, c):
     """
     Determines if 3 numbers can form a triangle.
@@ -637,6 +641,7 @@ class Product:  # pylint: disable=too-few-public-methods
         return msg
 
 
+# 29
 class ShoppingCart:
     """
     Shopping cart class.
