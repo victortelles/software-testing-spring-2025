@@ -7,6 +7,7 @@ import unittest
 
 from src.white_box import (
     VendingMachine,
+    calculate_total_discount,
     check_number_status,
     divide,
     get_grade,
@@ -130,7 +131,7 @@ class TestWhiteBoxTriangle(unittest.TestCase):
         self.assertEqual(is_triangle(0, 4, 5), "No, it's not a triangle.")
 
 
-class TestWhiteBox(unittest.TestCase):
+class TestWhiteBoxCheckNum(unittest.TestCase):
     """White-box unittest class."""
 
     # Test cases 1 = "check_number_status(number)"
@@ -153,6 +154,10 @@ class TestWhiteBox(unittest.TestCase):
     def test_check_number_status_zero(self):
         """Checks if zero returns "Zero"."""
         self.assertEqual(check_number_status(0), "Zero")
+
+
+class TestWhiteBoxValidatePass(unittest.TestCase):
+    """White-box unittest class - #2 Validate_password."""
 
     # Test cases 2 = "validate_password(password)"
     def test_validate_password_valid(self):
@@ -190,6 +195,43 @@ class TestWhiteBox(unittest.TestCase):
     def test_validate_password_with_invalid_special_char(self):
         """Checks if a password with special characters not in the required set returns False."""
         self.assertFalse(validate_password("Password1*"))
+
+
+class TestWhiteBoxCalculatorTotalDiscount(unittest.TestCase):
+    """White-box unittest class - #3 Calculator_total_discount."""
+
+    # Test cases 3 = "calculate_total_discount(total_amount)"
+    def test_calculate_total_discount_below_shreshold(self):
+        """Checks if amounts below 100 receive no discount."""
+        self.assertEqual(calculate_total_discount(99), 0)
+
+    def test_calculate_total_discount_at_lower_threshould(self):
+        """Checks if amount exactly at 100 receives 10% discount."""
+        self.assertEqual(calculate_total_discount(100), 10)
+
+    def test_calculate_total_discount_in_first_range(self):
+        """Checks if amount in the first range (100-500) range receives 10% discount."""
+        self.assertEqual(calculate_total_discount(200), 20)
+
+    def test_calculate_total_discount_at_upper_threshold(self):
+        """Checks if amount exactly at 500 receives 10% discount."""
+        self.assertEqual(calculate_total_discount(500), 50)
+
+    def test_calculate_total_discount_above_threshold(self):
+        """Checks if amount above 500 receive 20% discount."""
+        self.assertEqual(calculate_total_discount(600), 120)
+
+    def test_calculate_total_discount_large_amount(self):
+        """Checks if very large amounts receive 20% discount correctly"""
+        self.assertEqual(calculate_total_discount(10000), 2000)
+
+    def test_calculate_total_discount_zero(self):
+        """Checks if zero amount receives no discount"""
+        self.assertEqual(calculate_total_discount(0), 0)
+
+    def test_calculate_total_discount_negative(self):
+        """Checks handling of negative amounts."""
+        self.assertEqual(calculate_total_discount(-100), 0)
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
