@@ -17,6 +17,7 @@ from src.white_box import (
     is_triangle,
     validate_login,
     validate_password,
+    verify_age,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -350,6 +351,31 @@ class TestWhiteBoxValidateLogin(unittest.TestCase):
         self.assertEqual(
             validate_login("validuser", "passwordfifteen"), "Login Successful"
         )
+
+
+class TestWhiteBoxVerifyAge(unittest.TestCase):
+    """White-box unittest class - #7 verify_age."""
+
+    # Test cases 7 = "verify_age(age)"
+    def test_verify_age_eligible_minimum(self):
+        """Checks if age at lower boundary (18) returns 'Eligible'."""
+        self.assertEqual(verify_age(18), "Eligible")
+
+    def test_verify_age_eligible_maximum(self):
+        """Checks if age at upper boundary (65) returns 'Eligible'."""
+        self.assertEqual(verify_age(65), "Eligible")
+
+    def test_verify_age_not_elegible_below(self):
+        """Checks if age below lower boundary (17) returns 'Not Eligible'."""
+        self.assertEqual(verify_age(17), "Not Eligible")
+
+    def test_verify_age_zero(self):
+        """Checks if age zero returns 'Not Eligible'."""
+        self.assertEqual(verify_age(0), "Not Eligible")
+
+    def test_verify_age_very_old(self):
+        """Checks if age above upper boundary (100) returns 'Not Eligible'."""
+        self.assertEqual(verify_age(100), "Not Eligible")
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
