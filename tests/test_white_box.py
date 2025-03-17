@@ -11,11 +11,14 @@ from src.white_box import (
     calculate_order_total,
     calculate_total_discount,
     categorize_product,
+    celsius_to_fahrenheit,
     check_number_status,
     divide,
     get_grade,
     is_even,
     is_triangle,
+    validate_credit_card,
+    validate_email,
     validate_login,
     validate_password,
     verify_age,
@@ -414,6 +417,117 @@ class TestWhiteBoxCategorizeProduct(unittest.TestCase):
     def test_categorize_product_d_above(self):
         """Checks if price above upper boundary of Category D (201) returns 'Category D'."""
         self.assertEqual(categorize_product(201), "Category D")
+
+
+class TestWhiteBoxValidateEmail(unittest.TestCase):
+    """White-box unittest class - #9 validate_email."""
+
+    # Test cases 9 = "validate_email(email)"
+    def test_validate_email_valid(self):
+        """Checks if a properly formatted email returns  'Valid Email'."""
+        self.assertEqual(validate_email("test@example.com"), "Valid Email")
+
+    def test_validate_email_too_short(self):
+        """Checks if email shorter than 5 characters returns 'Invalid Email'."""
+        self.assertEqual(validate_email("t@e."), "Invalid Email")
+
+    def test_validate_email_too_long(self):
+        """Checks if email longer than 50 characters returns 'Invalid Email'."""
+        self.assertEqual(
+            validate_email(
+                "thisisaverylongemailthatexceedsfiftycharacters@example.com"
+            ),
+            "Invalid Email",
+        )
+
+    def test_validate_email_no_at_symbol(self):
+        """Checks if email without @ symbol returns 'Invalid Email'."""
+        self.assertEqual(validate_email("testexample.com"), "Invalid Email")
+
+    def test_validate_email_no_dot(self):
+        """Checks if email without dot returns 'Invalid Email'."""
+        self.assertEqual(validate_email("test@examplecom"), "Invalid Email")
+
+    def test_validate_email_minium_length(self):
+        """Checks if email with exact minium length (5) returns 'Valid Email'."""
+        self.assertEqual(validate_email("test@.com"), "Valid Email")
+
+    def test_validate_email_maxium_length(self):
+        """Checks if email with exact maximum length (50) returns 'Valid Email'."""
+        self.assertEqual(
+            validate_email("testemailexampleforlongcharacterssssss@example.com"),
+            "Valid Email",
+        )
+
+    def test_validate_email_empty_string(self):
+        """Checks if empty string returns 'Invalid Email'."""
+        self.assertEqual(validate_email(""), "Invalid Email")
+
+
+class TestWhiteBoxCelsiusToFahrenheit(unittest.TestCase):
+    """White-box unittest class - #10 celsius_to_fahrenheit."""
+
+    # Test cases 10 = "celsius_to_fahrenheit(celsius)"
+    def test_celsius_to_fahrenheit_zero(self):
+        """Checks conversion of 0°C to Fahrenheit"""
+        self.assertEqual(celsius_to_fahrenheit(0), 32)
+
+    def test_celsius_to_fahrenheit_positive(self):
+        """Checks conversion of positive Celsius temperature to Fahrenheit"""
+        self.assertEqual(celsius_to_fahrenheit(20), 68)
+
+    def test_celsius_to_fahrenheit_negative(self):
+        """Checks conversion of negative Celsius temperature to Fahrenheit"""
+        self.assertEqual(celsius_to_fahrenheit(-10), 14)
+
+    def test_celsius_to_fahrenheit_lower_boundary(self):
+        """Checks conversion at lower boundary (-100°C) of valid range"""
+        self.assertEqual(celsius_to_fahrenheit(-100), -148)
+
+    def test_celsius_to_fahrenheit_upper_boundary(self):
+        """Checks conversion at upper boundary (100°C) of valid range"""
+        self.assertEqual(celsius_to_fahrenheit(100), 212)
+
+    def test_celsius_to_fahrenheit_below_range(self):
+        """Checks handling of temperature below valid range."""
+        self.assertEqual(celsius_to_fahrenheit(-101), "Invalid Temperature")
+
+    def test_celsius_to_fahrenheit_above_range(self):
+        """Checks handling of temperature above valid range."""
+        self.assertEqual(celsius_to_fahrenheit(101), "Invalid Temperature")
+
+
+class TestWhiteBoxValidateCreditCard(unittest.TestCase):
+    """White-box unittest class - #11 validate_credit_card."""
+
+    # Test cases 11 = "validate_credit_card(card_number)"
+    def test_validate_credit_card_valid_min(self):
+        """Checks if credit card with minimum valid length (13 digits) return 'Valid Card'."""
+        self.assertEqual(validate_credit_card("1234567890123"), "Valid Card")
+
+    def test_validate_credit_card_valid_max(self):
+        """Checks if credit card with maximum valid length (16 digits) return 'Valid Card'."""
+        self.assertEqual(validate_credit_card("1234567890123456"), "Valid Card")
+
+    def test_validate_credit_card_too_short(self):
+        """Checks if credit card number too short (12 digits) returns 'Invalid Card'."""
+        self.assertEqual(validate_credit_card("123456789012"), "Invalid Card")
+
+    def test_valdiate_credit_card_too_long(self):
+        """Checks if credit card number too long (17 digits) returns 'Invalid Card'."""
+        self.assertEqual(validate_credit_card("12345678901234567"), "Invalid Card")
+
+    def test_validate_credit_card_non_digit(self):
+        """Checks if credit card with non-digit characters returns 'Invalid Card'."""
+        self.assertEqual(validate_credit_card("a1234567890123"), "Invalid Card")
+
+    def test_validate_credit_card_with_spaces(self):
+        """Checks if credit card with spaces returns 'Invalid Card'."""
+        self.assertEqual(validate_credit_card(" 12345 6789 0123"), "Invalid Card")
+
+    def test_validate_credit_card_empty_string(self):
+        """Checks if empty string returns 'Invalid Card'."""
+        self.assertEqual(validate_credit_card(""), "Invalid Card")
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
