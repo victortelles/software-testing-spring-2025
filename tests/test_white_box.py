@@ -10,6 +10,7 @@ from src.white_box import (
     calculate_items_shipping_cost,
     calculate_order_total,
     calculate_total_discount,
+    categorize_product,
     check_number_status,
     divide,
     get_grade,
@@ -376,6 +377,43 @@ class TestWhiteBoxVerifyAge(unittest.TestCase):
     def test_verify_age_very_old(self):
         """Checks if age above upper boundary (100) returns 'Not Eligible'."""
         self.assertEqual(verify_age(100), "Not Eligible")
+
+
+class TestWhiteBoxCategorizeProduct(unittest.TestCase):
+    """White-box unittest class - #8 categorize_product."""
+
+    # Test cases 8 = "categorize_product(product_name)"
+    def test_categorize_product_lower_boundary(self):
+        """Checks if price at lower boundary of Category A (10) returns 'Category A'."""
+        self.assertEqual(categorize_product(10), "Category A")
+
+    def test_categorize_product_a_upper_boundary(self):
+        """Checks if price at upper boundary of Category A (50) returns 'Category A'."""
+        self.assertEqual(categorize_product(50), "Category A")
+
+    def test_categorize_product_b_lower_boundary(self):
+        """Checks if price at lower boundary of Category B (51) returns 'Category B'."""
+        self.assertEqual(categorize_product(51), "Category B")
+
+    def test_categorize_product_b_upper_boundary(self):
+        """Checks if price at upper boundary of Category B (100) returns 'Category B'."""
+        self.assertEqual(categorize_product(100), "Category B")
+
+    def test_categorize_product_c_lower_boundary(self):
+        """Checks if price at lower boundary of Category C (101) returns 'Category C'."""
+        self.assertEqual(categorize_product(101), "Category C")
+
+    def test_categorize_product_c_upper_boundary(self):
+        """Checks if price at upper boundary of Category C (200) returns 'Category C'."""
+        self.assertEqual(categorize_product(200), "Category C")
+
+    def test_categorize_product_d_below(self):
+        """Checks if price below lower boundary of Category D (9) returns 'Category D'."""
+        self.assertEqual(categorize_product(9), "Category D")
+
+    def test_categorize_product_d_above(self):
+        """Checks if price above upper boundary of Category D (201) returns 'Category D'."""
+        self.assertEqual(categorize_product(201), "Category D")
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
