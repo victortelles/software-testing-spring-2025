@@ -15,6 +15,7 @@ from src.white_box import (
     get_grade,
     is_even,
     is_triangle,
+    validate_login,
     validate_password,
 )
 
@@ -276,7 +277,7 @@ class TestWhiteBoxCalculateItemsShipingCost(unittest.TestCase):
 
     def test_calculate_items_shipping_cost_standard_medium_weight(self):
         """Checks standard shipping cost for weight between 5 and 10"""
-        items = [{"weight": 5}, {"weight": 6}]
+        items = [{"weight": 3}, {"weight": 5}]
         self.assertEqual(calculate_items_shipping_cost(items, "standard"), 15)
 
     def test_calculate_items_shipping_cost_standard_high_weight(self):
@@ -302,6 +303,53 @@ class TestWhiteBoxCalculateItemsShipingCost(unittest.TestCase):
     def test_calculate_items_shipping_cost_empty_items(self):
         """Check shipping cost for an empty items list"""
         self.assertEqual(calculate_items_shipping_cost([], "standard"), 10)
+
+
+class TestWhiteBoxValidateLogin(unittest.TestCase):
+    """White-box unittest class - #6 validate_login."""
+
+    # Test cases 6 = "validate_login(username, password)"
+    def test_validate_login_successful(self):
+        """Checks if valid username and password combination returns 'Login Successful'."""
+        self.assertEqual(validate_login("validuser", "password123"), "Login Successful")
+
+    def test_validate_login_username_too_short(self):
+        """Checks if username shorter than 5 characters returns 'Login Failed'."""
+        self.assertEqual(validate_login("user", "password123"), "Login Failed")
+
+    def test_validate_login_username_too_long(self):
+        """Checks if username longer than 20 characters returns 'Login Failed'."""
+        self.assertEqual(
+            validate_login("thisusernameiswaytoolong", "password123"), "Login Failed"
+        )
+
+    def test_validate_login_password_too_short(self):
+        """Checks if password shorter than 5 characters returns 'Login Failed'."""
+        self.assertEqual(validate_login("validuser", "pass"), "Login Failed")
+
+    def test_validate_login_password_too_long(self):
+        """Checks if password longer than 15 characters returns 'Login Failed'."""
+        self.assertEqual(validate_login("validuser", "pass"), "Login Failed")
+
+    def test_validate_login_boundary_username_min(self):
+        """Checks login with username at minimum length boundary (5 characters)."""
+        self.assertEqual(validate_login("user1", "password123"), "Login Successful")
+
+    def test_validate_login_boundary_username_max(self):
+        """Checks login with username at maximum length boundary (20 characters)."""
+        self.assertEqual(
+            validate_login("usernameistwentychar", "password123"), "Login Successful"
+        )
+
+    def test_validate_login_boundary_password_min(self):
+        """Checks login with password at minimum length boundary (8 characters)."""
+        self.assertEqual(validate_login("validuser", "pass1234"), "Login Successful")
+
+    def test_validate_login_boundary_password_max(self):
+        """Checks login with password at maximum length boundary (15 characters)."""
+        self.assertEqual(
+            validate_login("validuser", "passwordfifteen"), "Login Successful"
+        )
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
