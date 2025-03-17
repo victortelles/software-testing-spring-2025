@@ -7,6 +7,8 @@ import unittest
 
 from src.white_box import (
     VendingMachine,
+    calculate_items_shipping_cost,
+    calculate_order_total,
     calculate_total_discount,
     check_number_status,
     divide,
@@ -232,6 +234,74 @@ class TestWhiteBoxCalculatorTotalDiscount(unittest.TestCase):
     def test_calculate_total_discount_negative(self):
         """Checks handling of negative amounts."""
         self.assertEqual(calculate_total_discount(-100), 0)
+
+
+class TestWhiteBoxCalculateOrderTotal(unittest.TestCase):
+    """White-box unittest class - #4 calculate_order_total."""
+
+    # Test cases 4 = "calculate_order_total(items)"
+    def test_calculate_order_total_empty(self):
+        """Checks if an empty items list returns zero total."""
+        self.assertEqual(calculate_order_total([]), 0)
+
+    def test_calculate_order_total_single_item_no_discount(self):
+        """Checks calculation for a single item with quantity in the no-discount range (1-5)."""
+        items = [{"quantity": 3, "price": 10}]
+        self.assertEqual(calculate_order_total(items), 30)
+
+    def test_calculate_order_total_single_item_small_discount(self):
+        """Checks calculation for a single item with quantity in the 5% discount range (6-10)"""
+        items = [{"quantity": 8, "price": 10}]
+        self.assertEqual(calculate_order_total(items), 76)
+
+    def test_calculate_order_total_single_item_large_discount(self):
+        """Checks calculation for a single item with quantity in the 10% discount range (> 10)."""
+        items = [{"quantity": 15, "price": 10}]
+        self.assertEqual(calculate_order_total(items), 135)
+
+    def test_calculate_order_total_zero_quantity(self):
+        """Checks Handling of zero quantity items"""
+        items = [{"quantity": 0, "price": 10}]
+        self.assertEqual(calculate_order_total(items), 0)
+
+
+class TestWhiteBoxCalculateItemsShipingCost(unittest.TestCase):
+    """White-box unittest class - #5 calculate_items_shipping_cost."""
+
+    # Test cases 5 = "calculate_items_shipping_cost(items)"
+    def test_calculate_items_shipping_cost_standard_low_weight(self):
+        """Checks standard shipping cost for weight <= 5."""
+        items = [{"weight": 2}, {"weight": 1}]
+        self.assertEqual(calculate_items_shipping_cost(items, "standard"), 10)
+
+    def test_calculate_items_shipping_cost_standard_medium_weight(self):
+        """Checks standard shipping cost for weight between 5 and 10"""
+        items = [{"weight": 5}, {"weight": 6}]
+        self.assertEqual(calculate_items_shipping_cost(items, "standard"), 15)
+
+    def test_calculate_items_shipping_cost_standard_high_weight(self):
+        """Checks standard shipping cost for weight > 10"""
+        items = [{"weight": 11}, {"weight": 12}]
+        self.assertEqual(calculate_items_shipping_cost(items, "standard"), 20)
+
+    def test_calculate_items_shipping_cost_express_low_weight(self):
+        """Checks express shipping cost for weight <= 5"""
+        items = [{"weight": 2}, {"weight": 2.5}]
+        self.assertEqual(calculate_items_shipping_cost(items, "express"), 20)
+
+    def test_calculate_items_shipping_cost_express_medium_weight(self):
+        """Checks express shipping cost for weight between 5 and 10"""
+        items = [{"weight": 3}, {"weight": 6}]
+        self.assertEqual(calculate_items_shipping_cost(items, "express"), 30)
+
+    def test_calculate_items_shipping_cost_exppress_high_weight(self):
+        """Checks express shipping cost for weight > 10"""
+        items = [{"weight": 11}, {"weight": 12}]
+        self.assertEqual(calculate_items_shipping_cost(items, "express"), 40)
+
+    def test_calculate_items_shipping_cost_empty_items(self):
+        """Check shipping cost for an empty items list"""
+        self.assertEqual(calculate_items_shipping_cost([], "standard"), 10)
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
