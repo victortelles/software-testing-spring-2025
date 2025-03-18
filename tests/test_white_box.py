@@ -7,6 +7,7 @@ import unittest
 
 from src.white_box import (
     DocumentEditingSystem,
+    ElevatorSystem,
     TrafficLight,
     UserAuthentication,
     VendingMachine,
@@ -963,3 +964,54 @@ class TestWhiteBoxDocumentEditingSystem(unittest.TestCase):
         document = DocumentEditingSystem()
         self.assertEqual(document.edit_document(), "Invalid operation in current state")
         self.assertEqual(document.state, "Editing")
+
+
+# pylint: disable=too-many-lines
+class TestWhiteBoxElevatorSystem(unittest.TestCase):
+    """White-box unittest class - #26 ElevatorSystem."""
+
+    # Test cases 26 = "ElevatorSystem"
+    def test_elevator_initial_state(self):
+        """Check if elevator system initializes in 'Idle' state."""
+        elevator = ElevatorSystem()
+        self.assertEqual(elevator.state, "Idle")
+
+    def test_elevator_system_move_up_when_idle(self):
+        """Check move_up behavior when in 'Idle' state."""
+        elevator = ElevatorSystem()
+        self.assertEqual(elevator.move_up(), "Elevator moving up")
+        self.assertEqual(elevator.state, "Moving Up")
+
+    def test_elevator_system_move_down_when_idle(self):
+        """Check move_down behavior when in 'Idle' state."""
+        elevator = ElevatorSystem()
+        self.assertEqual(elevator.move_down(), "Elevator moving down")
+        self.assertEqual(elevator.state, "Moving Down")
+
+    def test_elevator_system_stop_when_movin_up(self):
+        """Check stop behavior when in 'Moving Up' state."""
+        elevator = ElevatorSystem()
+        elevator.state = "Moving Up"
+        self.assertEqual(elevator.stop(), "Elevator stopped")
+        self.assertEqual(elevator.state, "Idle")
+
+    def test_elevator_system_stop_when_moving_down(self):
+        """Check stop behavior when in 'Moving Down' state."""
+        elevator = ElevatorSystem()
+        elevator.state = "Moving Down"
+        self.assertEqual(elevator.stop(), "Elevator stopped")
+        self.assertEqual(elevator.state, "Idle")
+
+    def test_elevator_system_stop_when_idle(self):
+        """Check stop behavior when in 'Idle' state."""
+        elevator = ElevatorSystem()
+        self.assertEqual(elevator.stop(), "Invalid operation in current state")
+        self.assertEqual(elevator.state, "Idle")
+
+    def test_elevator_system_move_up_when_moving(self):
+        """Check move_up behavior when already moving."""
+        elevator = ElevatorSystem()
+        elevator.state = "Moving Up"
+        self.assertEqual(elevator.move_up(), "Invalid operation in current state")
+        elevator.state = "Moving Down"
+        self.assertEqual(elevator.move_up(), "Invalid operation in current state")
