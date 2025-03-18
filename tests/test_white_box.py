@@ -34,6 +34,7 @@ from src.white_box import (
     VendingMachine,
     TrafficLight,
     UserAuthentication,
+    DocumentEditingSystem,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -889,20 +890,50 @@ class TestWhiteBoxUserAuthentication(unittest.TestCase):
     """White-box unittest class - #24 UserAuthentication."""
 
     # Test cases 24 = "UserAuthentication"
-    def test_user_authentication_init(self):
-        """Set up UserAuthentication instance"""
-        self.auth = UserAuthentication()
-        self.assertEqual(self.auth.state, 'Logged Out')
+    def test_user_authentication_initial_state(self):
+        """Check if user Authentication initializes in 'Logged Out' state."""
+        auth = UserAuthentication()
+        self.assertEqual(auth.state, 'Logged Out')
 
-    def test_user_authentication_login(self):
-        """Check login functionality in different state."""
-        self.auth = UserAuthentication()
-        self.assertEqual(self.auth.login(), 'Login successful')
-        self.assertEqual(self.auth.login(), 'Invalid operation in current state')
+    def test_user_authentication_login_when_logged_out(self):
+        """Check login behaivor when in 'Logged Out'state. """
+        auth = UserAuthentication()
+        self.assertEqual(auth.login(), 'Login successful')
+        self.assertEqual(auth.login(), 'Invalid operation in current state')
 
-    def test_user_authentication_logout(self):
-        """Check logout functionality in different states."""
-        self.auth = UserAuthentication()
-        self.auth.login()
-        self.assertEqual(self.auth.logout(), 'Logout successful')
-        self.assertEqual(self.auth.logout(), 'Invalid operation in current state')
+    def test_user_authentication_login_when_logged_in(self):
+        """Check login behavior when in 'Logged In' state."""
+        auth = UserAuthentication()
+        auth.state = 'Logged In'
+        self.assertEqual(auth.logout(), 'Invalid operation in current state')
+        self.assertEqual(auth.logout(), 'Logged In')
+
+    def test_user_authentication_logout_when_logged_in(self):
+        """Check logout behavior when in 'Logged In" state."""
+        auth = UserAuthentication()
+        auth.state = "Logged In"
+        self.assertEqual(auth.logout(), 'Logout successful')
+        self.assertEqual(auth.state, 'Logged Out')
+
+    def test_user_authentication_logout_when_logged_out(self):
+        """Check logout behavior when in 'Logged Out' state."""
+        auth = UserAuthentication()
+        self.assertEqual(auth.logout(), 'Invalid operation in current state')
+        self.assertEqual(auth.state, 'Logged Out')
+
+
+class TestWhiteBoxDocumentEditingSystem(unittest.TestCase):
+    """White-box unittest class - #25 DocumentEditingSystem."""
+
+    # Test cases 25 = "DocumentEditingSystem"
+    def test_document_editing_system_initial_state(self):
+        """Check if document editing system initializes in 'Editing'state. """
+        document = DocumentEditingSystem
+        self.assertEqual(document.state, 'Editing')
+
+    def test_document_editing_system_save_when_saved(self):
+        """Check save_document behavior when in 'Saved' state."""
+        document = DocumentEditingSystem
+        document.state = 'Saved'
+        self.assertEqual(document.save_document(), "Invalid operation in current state")
+        self.assertEqual(document.state, "Saved")
