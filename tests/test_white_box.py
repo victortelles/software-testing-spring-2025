@@ -22,6 +22,7 @@ from src.white_box import (
     validate_login,
     validate_password,
     verify_age,
+    validate_date,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -528,6 +529,62 @@ class TestWhiteBoxValidateCreditCard(unittest.TestCase):
     def test_validate_credit_card_empty_string(self):
         """Checks if empty string returns 'Invalid Card'."""
         self.assertEqual(validate_credit_card(""), "Invalid Card")
+
+
+class TestWhiteBoxValidateDate(unittest.TestCase):
+    """White-box unittest class - #12 validate_date."""
+    # Test cases 12 = "validate_date(date_string)"
+    def test_validate_date_valid(self):
+        """Checks if a valid date returns 'Valid Date'. """
+        self.assertEqual(validate_date(2022, 1, 1), "Valid Date")
+
+    def test_validate_date_year_too_early(self):
+        """Checks if year before 1900 returns 'Invalid Date'."""
+        self.assertEqual(validate_date(1899, 5 ,15), "Invalid Date")
+
+    def test_validate_date_year_too_late(self):
+        """Checks if year after 2100 returns 'Invalid Date'."""
+        self.assertEqual(validate_date(2101, 5, 15), "Invalid Date")
+
+    def test_validate_date_month_too_low(self):
+        """Checks if month below 1 returns 'Invalid Date'."""
+        self.assertEqual(validate_date(2000, 0, 15), "Invalid Date")
+
+    def test_validate_date_month_too_high(self):
+        """Checks if mont above 12 returns 'Invalid Date'."""
+        self.assertEqual(validate_date(2000, 13, 15), "Invalid Date")
+
+    def test_validate_date_day_too_low(self):
+        """Checks if day below 1 returns 'Invalid Date'."""
+        self.assertEqual(validate_date(2000, 5, 0), "Invalid Date")
+
+    def test_validate_date_day_too_high(self):
+        """Checks if day above 31 returns 'Invalid Date'."""
+        self.assertEqual(validate_date(2000, 5, 32), "Invalid Date")
+
+    def test_validate_date_year_boundary_min(self):
+        """Checks if year lower boundary (1900) returns 'Valid Date'"""
+        self.assertEqual(validate_date(1900, 5 ,15), "Valid Date")
+
+    def test_validate_date_year_boundary_max(self):
+        """Checks if year upper boundary (2100) returns 'Valid Date"""
+        self.assertEqual(validate_date(2100, 5, 15), "Valid Date")
+
+    def test_validate_date_month_boundary_min(self):
+        """Checks if month at lower boundary (1) returns 'Valid Date'."""
+        self.assertEqual(validate_date(2000, 1, 15), "Valid Date")
+
+    def test_validate_date_month_boundary_max(self):
+        """Checks if month at upper boundary (12) return 'Valid Date'."""
+        self.assertEqual(validate_date(2000, 12, 15), "Valid Date")
+
+    def test_validate_date_day_boundary_min(self):
+        """Checks if day at lower boundary (1) returns 'Valid Date'."""
+        self.assertEqual(validate_date(2000, 5, 1), "Valid Date")
+
+    def test_validate_date_day_boundary_max(self):
+        """Checks if day at upper boundary (31) returns 'Valid Date. """
+        self.assertEqual(validate_date(2000, 5, 31), "Valid Date")
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
