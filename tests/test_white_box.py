@@ -7,10 +7,11 @@ import io
 import unittest
 from unittest import mock
 
-from src.white_box import (
+from src.white_box import (  # BankingSystem,
     BankAccount,
     DocumentEditingSystem,
     ElevatorSystem,
+    Product,
     TrafficLight,
     UserAuthentication,
     VendingMachine,
@@ -1039,3 +1040,31 @@ class TestWhiteBoxBankAccount(unittest.TestCase):
             self.assertEqual(
                 fake_stdout.getvalue().strip(), "The account 67890 has a balance of 500"
             )
+
+
+# 28
+class TestWhiteBoxBankingSystem(unittest.TestCase):
+    """White-box unittest class - #28 BankingSystem."""
+
+    # Test cases 28 = "BankingSystem"
+
+
+class TestWhiteBoxProduct(unittest.TestCase):
+    """White-box unittest class - #29 Product."""
+
+    # Test cases 29 = "Product"
+    def test_product_initialization(self):
+        """Check if product initializes with correct values."""
+        product = Product("Laptop", 1000)
+        self.assertEqual(product.name, "Laptop")
+        self.assertEqual(product.price, 1000)
+
+    def test_product_view_product(self):
+        """Check view_product output and return value."""
+        product = Product("Phone", 500)
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            return_value = product.view_product()
+            self.assertEqual(
+                fake_stdout.getvalue(), "The product Phone has a price of 500\n"
+            )
+            self.assertEqual(return_value, "The product Phone has a price of 500")
