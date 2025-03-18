@@ -25,6 +25,7 @@ from src.white_box import (
     validate_date,
     check_flight_eligibility,
     validate_url,
+    calculate_quantity_discount,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -657,6 +658,29 @@ class TestWhiteBoxValidateURL(unittest.TestCase):
         self.assertEqual(validate_url(""), 'Invalid URL')
 
 
+class TestWhiteBoxCalculateQuantityDiscount(unittest.TestCase):
+    """White-box unittest class - #15 calculate_quantity_discount(quantity)."""
+
+    #Test cases 15 = "calculate_quantity_discount(quantity)"
+    def test_calculate_quantity_discount_no_discount_lower_bound(self):
+        """Checks if quantity at lower bound (1) returns 'No discount'."""
+        self.assertEqual(calculate_quantity_discount(1), 'No Discount')
+
+    def test_calculate_quantity_discount_no_discount_upper_bound(self):
+        """Checks if quantity at upper bound (5) returns 'No Discount' """
+        self.assertEqual(calculate_quantity_discount(5), 'No Discount')
+
+    def test_calculate_quantity_discount_small_discount_lower_bound(self):
+        """Check if quantity at lower bound of 5% discount range (6) returns '5% Discount'."""
+        self.assertEqual(calculate_quantity_discount(6), '5% Discount')
+
+    def test_calculate_quantity_discount_small_discount_upper_bound(self):
+        """Checks if quantity at upper bound of 5% discount range (10) returns '5% Discount'."""
+        self.assertEqual(calculate_quantity_discount(10), '5% Discount')
+
+    def test_calculate_quantity_discount_large_discount_minimum(self):
+        """Checks if quantity at minimum for 10% discount (11) returns '10% Discount'."""
+        self.assertEqual(calculate_quantity_discount(11), '10% Discount')
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
