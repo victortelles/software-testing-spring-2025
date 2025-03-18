@@ -33,6 +33,7 @@ from src.white_box import (
     get_weather_advisory,
     VendingMachine,
     TrafficLight,
+    UserAuthentication,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -855,9 +856,9 @@ class TestWhiteBoxVendingMachine(unittest.TestCase):
 
 
 class TestWhiteBoxTrafficLight(unittest.TestCase):
-    """White-box unittest class - #22 TrafficLight."""
+    """White-box unittest class - #23 TrafficLight."""
 
-    # Test cases 21 = "TrafficLight"
+    # Test cases 23 = "TrafficLight"
     def test_traffic_light_initial_state(self):
         """Check if traffic light initializes in 'Red' State"""
         light = TrafficLight()
@@ -884,3 +885,24 @@ class TestWhiteBoxTrafficLight(unittest.TestCase):
         self.assertEqual(light.get_current_state(),'Red')
 
 
+class TestWhiteBoxUserAuthentication(unittest.TestCase):
+    """White-box unittest class - #24 UserAuthentication."""
+
+    # Test cases 24 = "UserAuthentication"
+    def test_user_authentication_init(self):
+        """Set up UserAuthentication instance"""
+        self.auth = UserAuthentication()
+        self.assertEqual(self.auth.state, 'Logged Out')
+
+    def test_user_authentication_login(self):
+        """Check login functionality in different state."""
+        self.auth = UserAuthentication()
+        self.assertEqual(self.auth.login(), 'Login successful')
+        self.assertEqual(self.auth.login(), 'Invalid operation in current state')
+
+    def test_user_authentication_logout(self):
+        """Check logout functionality in different states."""
+        self.auth = UserAuthentication()
+        self.auth.login()
+        self.assertEqual(self.auth.logout(), 'Logout successful')
+        self.assertEqual(self.auth.logout(), 'Invalid operation in current state')
