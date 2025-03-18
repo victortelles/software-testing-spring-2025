@@ -24,6 +24,7 @@ from src.white_box import (
     verify_age,
     validate_date,
     check_flight_eligibility,
+    validate_url,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -595,6 +596,66 @@ class TestWhiteBoxCheckFlightEligibility(unittest.TestCase):
     def test_check_flight_eligible_age_not_frequent_flyer(self):
         """Checks if eligible age (18-65) but not frequent flyer returns 'Eligible to Book'."""
         self.assertEqual(check_flight_eligibility(30, False), 'Eligible to Book')
+
+    def test_check_flight_not_elegible_age_not_frequent_flyer(self):
+        """Checks if not eligible age (<18 or >65) and not frequent flyer returns 'Not Eligible to Book'."""
+        self.assertEqual(check_flight_eligibility(16, False), 'Not Eligible to Book')
+        self.assertEqual(check_flight_eligibility(70, False), 'Not Eligible to Book')
+
+    def test_check_flight_eligible_age_and_frequent_flyer(self):
+        """Checks if elihible age and frequent flyer returns 'Eligible to Book'."""
+        self.assertEqual(check_flight_eligibility(30, True), 'Eligible to Book')
+
+    def test_check_flight_eligibility_boundary_lower_age_not_frequent_flyer(self):
+        """Checks if age at lower boundary (18) and not frequent flyer returns 'Eligible to Book'."""
+        self.assertEqual(check_flight_eligibility(18, False), "Eligible to Book")
+
+    def test_check_flight_eligibility_boundary_upper_age_not_frequent_flyer(self):
+        """Checks if age at upper boundary (65) and not frequent flyer returns 'Elegible to Book'."""
+        self.assertEqual(check_flight_eligibility(65, False), 'Eligible to Book')
+
+    def test_check_flight_eligibility_just_below_min_age_not_frequent_flyer(self):
+        """Check if age just below minimum (17) and not frequent flyer returns 'Not Elegible to book'."""
+        self.assertEqual(check_flight_eligibility(17, False), 'Not Eligible to Book')
+
+    def test_check_flight_elegibility_just_above_max_age_not_frequent_flyer(self):
+        """Check if age just above maximum (66) and not frequent flyer return 'Not Elegible to Book'."""
+        self.assertEqual(check_flight_eligibility(66, False), 'Not Eligible to Book')
+
+
+class TestWhiteBoxValidateURL(unittest.TestCase):
+    """White-box unittest class - #14 validate_url(url)."""
+    #Test cases 14 = "validate_url(url)"
+    def test_validate_url_http(self):
+        """Check if a valid HTTP URL returns 'Valid URL'."""
+        self.assertEqual(validate_url('http://example.com'), 'Valid URL')
+
+    def test_validate_url_valid_https(self):
+        """Check if a valid HTTPS URL returns 'Valid URL'"""
+        self.assertEqual(validate_url('https://example.ccom'), 'Valid URL')
+
+    def test_validate_url_no_protocol(self):
+        """Checks if URL Without protocol returns 'Invalid URL'."""
+        self.assertEqual(validate_url('example.com'), 'Invalid URL')
+
+    def test_validate_url_invalid_protocol(self):
+        """Checks if URL with invalid protocol returns 'Invalid URL'."""
+        self.assertEqual(validate_url('www://example.com'), 'Invalid URL')
+
+    def test_validate_url_too_long(self):
+        """Checks if URL longer than 255 characters returns 'Invalid URL'."""
+        long_url = "http://"+"a" * 250 + ".com"
+        self.assertEqual(validate_url(long_url), 'Invalid URL')
+
+    def test_validate_url_max_lenght(self):
+        """Checks if URL at maximum length (255) returns 'Valid URL'."""
+        max_url = "http://"+"a" * 248 + ".com"
+        self.assertEqual(validate_url(max_url), 'Valid URL')
+    
+    def test_validate_url_empty(self):
+        """Checks if empty string returns 'Invalid URL'."""
+        self.assertEqual(validate_url(""), 'Invalid URL')
+        
 
 
 
