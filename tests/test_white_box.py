@@ -831,42 +831,41 @@ class TestWhiteBoxGetWeatherAdvisory(unittest.TestCase):
         self.assertEqual(get_weather_advisory(20, 50), "No Specific Advisory")
 
 
-# 22
 class TestWhiteBoxVendingMachine(unittest.TestCase):
-    """
-    Vending Machine unit tests.
-    """
+    """White-box unittest class - class for Vending Machine."""
 
-    # @classmethod
-    # def setUpClass(cls):
-    #    return
+    # Test cases 22 = VendingMachine"
 
-    def setUp(self):
-        self.vending_machine = VendingMachine()
-        self.assertEqual(self.vending_machine.state, "Ready")
+    def test_vending_machine_initial_state(self):
+        """Check if vending machine initializes in 'Ready' State"""
+        machine = VendingMachine()
+        self.assertEqual(machine.state, "Ready")
 
-    # def tearDown(self):
-    #    return
+    def test_vending_machine_insert_coin_when_ready(self):
+        """Check insert_coin behavior when in 'Ready' state"""
+        machine = VendingMachine()
+        self.assertEqual(machine.insert_coin(), "Coin Inserted. Select your drink.")
+        self.assertEqual(machine.state, "Dispensing")
 
-    # @classmethod
-    # def tearDownClass(cls):
-    #    return
+    def test_vending_machine_insert_coin_when_dispensing(self):
+        """Check insert_coin behavior when id 'Dispensing' state."""
+        machine = VendingMachine()
+        machine.state = "Dispensing"
+        self.assertEqual(machine.insert_coin(), "Invalid operation in current state.")
+        self.assertEqual(machine.state, "Dispensing")
 
-    def test_vending_machine_insert_coin_error(self):
-        """Checks the vending machine can accept coins."""
-        self.vending_machine.state = "Dispensing"
+    def test_vending_machine_select_drink_when_dispensing(self):
+        """Check select_drink behavior when in 'Dispensing' state"""
+        machine = VendingMachine()
+        machine.state = "Dispensing"
+        self.assertEqual(machine.select_drink(), "Drink Dispensed. Thank you!")
+        self.assertEqual(machine.state, "Ready")
 
-        output = self.vending_machine.insert_coin()
-
-        self.assertEqual(self.vending_machine.state, "Dispensing")
-        self.assertEqual(output, "Invalid operation in current state.")
-
-    def test_vending_machine_insert_coin_success(self):
-        """Checks the vending machine fails to accept coins when it's not ready."""
-        output = self.vending_machine.insert_coin()
-
-        self.assertEqual(self.vending_machine.state, "Dispensing")
-        self.assertEqual(output, "Coin Inserted. Select your drink.")
+    def test_vending_select_drink_when_ready(self):
+        """Check select_drink behavior when in 'Ready' state"""
+        machine = VendingMachine()
+        self.assertEqual(machine.select_drink(), "Invalid operation in current state.")
+        self.assertEqual(machine.state, "Ready")
 
 
 class TestWhiteBoxTrafficLight(unittest.TestCase):
