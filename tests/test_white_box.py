@@ -27,6 +27,7 @@ from src.white_box import (
     validate_url,
     calculate_quantity_discount,
     check_file_size,
+    check_loan_eligibility,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -703,6 +704,43 @@ class TestWhiteBoxCheckFileSize(unittest.TestCase):
     def test_check_file_size_negative(self):
         """Checks if negative size returns 'Invalid File Size'."""
         self.assertEqual(check_file_size(-1), "Invalid File Size")
+
+
+class TestWhiteBoxCheckLoanEligibility(unittest.TestCase):
+    """White-box unittest class - #17 check_loan_eligibility(income, credit_score)."""
+
+    # Test cases 17 = "check_loan_eligibility(income, credit_score)"
+    def test_check_loan_eligibility_with_icome_below_minimum(self):
+        """Check if loan is denied when income is below the minimum threshold, returns 'Not Eligible'."""
+        self.assertEqual(check_loan_eligibility(29999, 800), 'Not Eligible')
+        self.assertEqual(check_loan_eligibility(0, 800), 'Not Eligible')
+        self.assertEqual(check_loan_eligibility(-5000, 800), 'Not Eligible')
+
+    def test_check_loan_eligibility_with_medium_income_high_credit(self):
+        """Checks if standard loan is granted with medium income and high credit score, returns 'Standard Loan'."""
+        self.assertEqual(check_loan_eligibility(30000, 701), 'Standard Loan')
+        self.assertEqual(check_loan_eligibility(45000, 750), 'Standard Loan')
+        self.assertEqual(check_loan_eligibility(60000, 800), 'Standard Loan')
+
+    def test_check_loan_eligibility_with_medium_income_low_credit(self):
+        """Checks if secured loan is granted with medium income and low credit score. return 'Secured Loan'."""
+        self.assertEqual(check_loan_eligibility(30000, 700), 'Secured Loan')
+        self.assertEqual(check_loan_eligibility(45000, 650), 'Secured Loan')
+        self.assertEqual(check_loan_eligibility(60000, 500), 'Secured Loan')
+
+    def test_check_loan_eligibility_with_high_income_high_credit(self):
+        """Check if premium loan is granted with high income and very high credit score, return 'Premium Loan'."""
+        self.assertEqual(check_loan_eligibility(60001, 751), 'Premium Loan')
+        self.assertEqual(check_loan_eligibility(10000, 800), 'Premium Loan')
+
+    def test_check_loan_eligibility_with_high_income_medium_credit(self):
+        """Check if standard loan is granted with high income but medium credit score, returns 'Standard Loan'"""
+        self.assertEqual(check_loan_eligibility(60001, 750), 'Standard Loan')
+        self.assertEqual(check_loan_eligibility(100000, 700), 'Standard Loan')
+        self.assertEqual(check_loan_eligibility(80000, 600), 'Standard Loan')
+
+
+
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
