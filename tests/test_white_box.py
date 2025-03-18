@@ -7,8 +7,9 @@ import io
 import unittest
 from unittest import mock
 
-from src.white_box import (  # BankingSystem,
+from src.white_box import (
     BankAccount,
+    BankingSystem,
     DocumentEditingSystem,
     ElevatorSystem,
     Product,
@@ -835,7 +836,6 @@ class TestWhiteBoxVendingMachine(unittest.TestCase):
     """White-box unittest class - class for Vending Machine."""
 
     # Test cases 22 = VendingMachine"
-
     def test_vending_machine_initial_state(self):
         """Check if vending machine initializes in 'Ready' State"""
         machine = VendingMachine()
@@ -1042,11 +1042,88 @@ class TestWhiteBoxBankAccount(unittest.TestCase):
             )
 
 
-# 28
 class TestWhiteBoxBankingSystem(unittest.TestCase):
     """White-box unittest class - #28 BankingSystem."""
 
     # Test cases 28 = "BankingSystem"
+    def setUp(self):
+        """Setup BankingSystem instance for each test case."""
+        self.banking_system = BankingSystem()
+        self.mock_account = mock.patch(
+            "src.white_box.BankAccount", return_value=mock.Mock(balance=1000)
+        ).start()
+
+    def tearDown(self):
+        """Clean up after each test."""
+        mock.patch.stopall()
+
+    def test_banking_system_authenticate_success(self):
+        """Check sucessful authentication"""
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            result = self.banking_system.authenticate("user123", "pass123")
+            self.assertTrue(result)
+            self.assertIn("user123", self.banking_system.logged_in_users)
+            self.assertIn(
+                "User user123 authenticated successfully", fake_stdout.getvalue()
+            )
+
+    def test_banking_system_authenticate_already_logged_in(self):
+        """Check authentication when user is already logged in"""
+        self.banking_system.logged_in_users.add("user123")
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            result = self.banking_system.authenticate("user123", "pass123")
+            self.assertFalse(result)
+            self.assertIn("User already logged in", fake_stdout.getvalue())
+
+    def test_banking_system_authenticate_failure(self):
+        """Check failed authentication"""
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            result = self.banking_system.authenticate("wrong_user", "wrong_pass")
+            self.assertFalse(result)
+            self.assertNotIn("wrong_user", self.banking_system.logged_in_users)
+            self.assertIn("Authentication failed", fake_stdout.getvalue())
+
+    def test_banking_system_transfer_money_sender_not_authenticated(self):
+        """Check money transfer when sender is not authenticated"""
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            result = self.banking_system.transfer_money(
+                "user123", "user456", 100, "regular"
+            )
+            self.assertFalse(result)
+            self.assertIn("Sender not authenticated", fake_stdout.getvalue())
+
+    def test_banking_system_transfer_money_invalid_type(self):
+        """Check money transfer with invalid transaction type."""
+        self.banking_system.logged_in_users.add("user123")
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            result = self.banking_system.transfer_money(
+                "user123", "user456", 100, "invalid"
+            )
+            self.assertFalse(result)
+            self.assertIn("Invalid transaction type", fake_stdout.getvalue())
+
+    def test_banking_system_transfer_money_insufficient_funds(self):
+        """Check money transfer with insufficient funds."""
+        self.banking_system.logged_in_users.add("user123")
+        self.mock_account.return_value.balance = 50  # Set low balance
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            result = self.banking_system.transfer_money(
+                "user123", "user456", 100, "regular"
+            )
+            self.assertFalse(result)
+            self.assertIn("Insufficient funds", fake_stdout.getvalue())
+
+    def test_banking_system_transfer_money_success(self):
+        """Check successful money transfer with different transaction types."""
+        self.banking_system.logged_in_users.add("user123")
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            result = self.banking_system.transfer_money(
+                "user123", "user456", 100, "regular"
+            )
+            self.assertTrue(result)
+            self.assertIn(
+                "Money transfer of $100 (regular transfer)", fake_stdout.getvalue()
+            )
 
 
 class TestWhiteBoxProduct(unittest.TestCase):
