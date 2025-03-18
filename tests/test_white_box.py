@@ -6,35 +6,35 @@ White-box unit testing examples.
 import unittest
 
 from src.white_box import (
+    DocumentEditingSystem,
+    TrafficLight,
+    UserAuthentication,
+    VendingMachine,
+    authenticate_user,
     calculate_items_shipping_cost,
     calculate_order_total,
+    calculate_quantity_discount,
+    calculate_shipping_cost,
     calculate_total_discount,
     categorize_product,
     celsius_to_fahrenheit,
+    check_file_size,
+    check_flight_eligibility,
+    check_loan_eligibility,
     check_number_status,
     divide,
     get_grade,
+    get_weather_advisory,
+    grade_quiz,
     is_even,
     is_triangle,
     validate_credit_card,
+    validate_date,
     validate_email,
     validate_login,
     validate_password,
-    verify_age,
-    validate_date,
-    check_flight_eligibility,
     validate_url,
-    calculate_quantity_discount,
-    check_file_size,
-    check_loan_eligibility,
-    calculate_shipping_cost,
-    grade_quiz,
-    authenticate_user,
-    get_weather_advisory,
-    VendingMachine,
-    TrafficLight,
-    UserAuthentication,
-    DocumentEditingSystem,
+    verify_age,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -545,14 +545,15 @@ class TestWhiteBoxValidateCreditCard(unittest.TestCase):
 
 class TestWhiteBoxValidateDate(unittest.TestCase):
     """White-box unittest class - #12 validate_date."""
+
     # Test cases 12 = "validate_date(date_string)"
     def test_validate_date_valid(self):
-        """Checks if a valid date returns 'Valid Date'. """
+        """Checks if a valid date returns 'Valid Date'."""
         self.assertEqual(validate_date(2022, 1, 1), "Valid Date")
 
     def test_validate_date_year_too_early(self):
         """Checks if year before 1900 returns 'Invalid Date'."""
-        self.assertEqual(validate_date(1899, 5 ,15), "Invalid Date")
+        self.assertEqual(validate_date(1899, 5, 15), "Invalid Date")
 
     def test_validate_date_year_too_late(self):
         """Checks if year after 2100 returns 'Invalid Date'."""
@@ -576,7 +577,7 @@ class TestWhiteBoxValidateDate(unittest.TestCase):
 
     def test_validate_date_year_boundary_min(self):
         """Checks if year lower boundary (1900) returns 'Valid Date'"""
-        self.assertEqual(validate_date(1900, 5 ,15), "Valid Date")
+        self.assertEqual(validate_date(1900, 5, 15), "Valid Date")
 
     def test_validate_date_year_boundary_max(self):
         """Checks if year upper boundary (2100) returns 'Valid Date"""
@@ -595,118 +596,120 @@ class TestWhiteBoxValidateDate(unittest.TestCase):
         self.assertEqual(validate_date(2000, 5, 1), "Valid Date")
 
     def test_validate_date_day_boundary_max(self):
-        """Checks if day at upper boundary (31) returns 'Valid Date. """
+        """Checks if day at upper boundary (31) returns 'Valid Date."""
         self.assertEqual(validate_date(2000, 5, 31), "Valid Date")
 
 
 class TestWhiteBoxCheckFlightEligibility(unittest.TestCase):
     """White-box unittest class - #13 check_flight_eligibility(age, frequent_flyer)."""
+
     # Test cases 12 = "validate_date(date_string)"
 
     def test_check_flight_eligible_age_not_frequent_flyer(self):
         """Checks if eligible age (18-65) but not frequent flyer returns 'Eligible to Book'."""
-        self.assertEqual(check_flight_eligibility(30, False), 'Eligible to Book')
+        self.assertEqual(check_flight_eligibility(30, False), "Eligible to Book")
 
     def test_check_flight_not_elegible_age_not_frequent_flyer(self):
-        """Checks if not eligible age (<18 or >65) and not frequent flyer returns 'Not Eligible to Book'."""
-        self.assertEqual(check_flight_eligibility(16, False), 'Not Eligible to Book')
-        self.assertEqual(check_flight_eligibility(70, False), 'Not Eligible to Book')
+        """Checks if not eligible age <18 or >65 and not frequent flyer '."""
+        self.assertEqual(check_flight_eligibility(16, False), "Not Eligible to Book")
+        self.assertEqual(check_flight_eligibility(70, False), "Not Eligible to Book")
 
     def test_check_flight_eligible_age_and_frequent_flyer(self):
         """Checks if elihible age and frequent flyer returns 'Eligible to Book'."""
-        self.assertEqual(check_flight_eligibility(30, True), 'Eligible to Book')
+        self.assertEqual(check_flight_eligibility(30, True), "Eligible to Book")
 
     def test_check_flight_eligibility_boundary_lower_age_not_frequent_flyer(self):
-        """Checks if age at lower boundary (18) and not frequent flyer returns 'Eligible to Book'."""
+        """Checks if age at lower boundary (18) and not frequent flyer."""
         self.assertEqual(check_flight_eligibility(18, False), "Eligible to Book")
 
     def test_check_flight_eligibility_boundary_upper_age_not_frequent_flyer(self):
-        """Checks if age at upper boundary (65) and not frequent flyer returns 'Elegible to Book'."""
-        self.assertEqual(check_flight_eligibility(65, False), 'Eligible to Book')
+        """Checks if age at upper boundary (65) and not frequent flyer."""
+        self.assertEqual(check_flight_eligibility(65, False), "Eligible to Book")
 
     def test_check_flight_eligibility_just_below_min_age_not_frequent_flyer(self):
-        """Check if age just below minimum (17) and not frequent flyer returns 'Not Elegible to book'."""
-        self.assertEqual(check_flight_eligibility(17, False), 'Not Eligible to Book')
+        """Check if age just below minimum (17) and not frequent flyer."""
+        self.assertEqual(check_flight_eligibility(17, False), "Not Eligible to Book")
 
     def test_check_flight_elegibility_just_above_max_age_not_frequent_flyer(self):
-        """Check if age just above maximum (66) and not frequent flyer return 'Not Elegible to Book'."""
-        self.assertEqual(check_flight_eligibility(66, False), 'Not Eligible to Book')
+        """Check if age just above maximum (66) and not frequent flyer."""
+        self.assertEqual(check_flight_eligibility(66, False), "Not Eligible to Book")
 
 
 class TestWhiteBoxValidateURL(unittest.TestCase):
     """White-box unittest class - #14 validate_url(url)."""
-    #Test cases 14 = "validate_url(url)"
+
+    # Test cases 14 = "validate_url(url)"
     def test_validate_url_http(self):
         """Check if a valid HTTP URL returns 'Valid URL'."""
-        self.assertEqual(validate_url('http://example.com'), 'Valid URL')
+        self.assertEqual(validate_url("http://example.com"), "Valid URL")
 
     def test_validate_url_valid_https(self):
         """Check if a valid HTTPS URL returns 'Valid URL'"""
-        self.assertEqual(validate_url('https://example.ccom'), 'Valid URL')
+        self.assertEqual(validate_url("https://example.ccom"), "Valid URL")
 
     def test_validate_url_no_protocol(self):
         """Checks if URL Without protocol returns 'Invalid URL'."""
-        self.assertEqual(validate_url('example.com'), 'Invalid URL')
+        self.assertEqual(validate_url("example.com"), "Invalid URL")
 
     def test_validate_url_invalid_protocol(self):
         """Checks if URL with invalid protocol returns 'Invalid URL'."""
-        self.assertEqual(validate_url('www://example.com'), 'Invalid URL')
+        self.assertEqual(validate_url("www://example.com"), "Invalid URL")
 
     def test_validate_url_too_long(self):
         """Checks if URL longer than 255 characters returns 'Invalid URL'."""
-        long_url = "http://"+"a" * 250 + ".com"
-        self.assertEqual(validate_url(long_url), 'Invalid URL')
+        long_url = "http://" + "a" * 250 + ".com"
+        self.assertEqual(validate_url(long_url), "Invalid URL")
 
     def test_validate_url_max_lenght(self):
         """Checks if URL at maximum length (255) returns 'Valid URL'."""
-        max_url = "http://"+"a" * 244 + ".com"
-        self.assertEqual(validate_url(max_url), 'Valid URL')
+        max_url = "http://" + "a" * 244 + ".com"
+        self.assertEqual(validate_url(max_url), "Valid URL")
 
     def test_validate_url_empty(self):
         """Checks if empty string returns 'Invalid URL'."""
-        self.assertEqual(validate_url(""), 'Invalid URL')
+        self.assertEqual(validate_url(""), "Invalid URL")
 
 
 class TestWhiteBoxCalculateQuantityDiscount(unittest.TestCase):
     """White-box unittest class - #15 calculate_quantity_discount(quantity)."""
 
-    #Test cases 15 = "calculate_quantity_discount(quantity)"
+    # Test cases 15 = "calculate_quantity_discount(quantity)"
     def test_calculate_quantity_discount_no_discount_lower_bound(self):
         """Checks if quantity at lower bound (1) returns 'No discount'."""
-        self.assertEqual(calculate_quantity_discount(1), 'No Discount')
+        self.assertEqual(calculate_quantity_discount(1), "No Discount")
 
     def test_calculate_quantity_discount_no_discount_upper_bound(self):
-        """Checks if quantity at upper bound (5) returns 'No Discount' """
-        self.assertEqual(calculate_quantity_discount(5), 'No Discount')
+        """Checks if quantity at upper bound (5) returns 'No Discount'"""
+        self.assertEqual(calculate_quantity_discount(5), "No Discount")
 
     def test_calculate_quantity_discount_small_discount_lower_bound(self):
         """Check if quantity at lower bound of 5% discount range (6) returns '5% Discount'."""
-        self.assertEqual(calculate_quantity_discount(6), '5% Discount')
+        self.assertEqual(calculate_quantity_discount(6), "5% Discount")
 
     def test_calculate_quantity_discount_small_discount_upper_bound(self):
         """Checks if quantity at upper bound of 5% discount range (10) returns '5% Discount'."""
-        self.assertEqual(calculate_quantity_discount(10), '5% Discount')
+        self.assertEqual(calculate_quantity_discount(10), "5% Discount")
 
     def test_calculate_quantity_discount_large_discount_minimum(self):
         """Checks if quantity at minimum for 10% discount (11) returns '10% Discount'."""
-        self.assertEqual(calculate_quantity_discount(11), '10% Discount')
+        self.assertEqual(calculate_quantity_discount(11), "10% Discount")
 
 
 class TestWhiteBoxCheckFileSize(unittest.TestCase):
     """White-box unittest class - #16 check_file_size(size_in_bytes)."""
 
-    #Test cases 16 = "check_file_size(size_in_bytes)"
+    # Test cases 16 = "check_file_size(size_in_bytes)"
     def test_check_file_size_zero(self):
         """Checks if zero bytes returns 'Valid File Size'."""
-        self.assertEqual(check_file_size(0), 'Valid File Size')
+        self.assertEqual(check_file_size(0), "Valid File Size")
 
     def test_check_file_size_max(self):
         """Checks if maximum allowed size (1 MB) returns 'Valid File Size'."""
-        self.assertEqual(check_file_size(1048576), 'Valid File Size')
+        self.assertEqual(check_file_size(1048576), "Valid File Size")
 
     def test_check_file_size_exceeded(self):
         """Checks if supported maximum allowe size (+1MB) returns 'Invalid File Size'."""
-        self.assertEqual(check_file_size(1048577), 'Invalid File Size')
+        self.assertEqual(check_file_size(1048577), "Invalid File Size")
 
     def test_check_file_size_negative(self):
         """Checks if negative size returns 'Invalid File Size'."""
@@ -718,33 +721,33 @@ class TestWhiteBoxCheckLoanEligibility(unittest.TestCase):
 
     # Test cases 17 = "check_loan_eligibility(income, credit_score)"
     def test_check_loan_eligibility_with_icome_below_minimum(self):
-        """Check if loan is denied when income is below the minimum threshold, returns 'Not Eligible'."""
-        self.assertEqual(check_loan_eligibility(29999, 800), 'Not Eligible')
-        self.assertEqual(check_loan_eligibility(0, 800), 'Not Eligible')
-        self.assertEqual(check_loan_eligibility(-5000, 800), 'Not Eligible')
+        """Check if loan is denied when income is below the minimum threshold."""
+        self.assertEqual(check_loan_eligibility(29999, 800), "Not Eligible")
+        self.assertEqual(check_loan_eligibility(0, 800), "Not Eligible")
+        self.assertEqual(check_loan_eligibility(-5000, 800), "Not Eligible")
 
     def test_check_loan_eligibility_with_medium_income_high_credit(self):
-        """Checks if standard loan is granted with medium income and high credit score, returns 'Standard Loan'."""
-        self.assertEqual(check_loan_eligibility(30000, 701), 'Standard Loan')
-        self.assertEqual(check_loan_eligibility(45000, 750), 'Standard Loan')
-        self.assertEqual(check_loan_eligibility(60000, 800), 'Standard Loan')
+        """Checks if standard loan is granted with medium income and high credit score."""
+        self.assertEqual(check_loan_eligibility(30000, 701), "Standard Loan")
+        self.assertEqual(check_loan_eligibility(45000, 750), "Standard Loan")
+        self.assertEqual(check_loan_eligibility(60000, 800), "Standard Loan")
 
     def test_check_loan_eligibility_with_medium_income_low_credit(self):
-        """Checks if secured loan is granted with medium income and low credit score. return 'Secured Loan'."""
-        self.assertEqual(check_loan_eligibility(30000, 700), 'Secured Loan')
-        self.assertEqual(check_loan_eligibility(45000, 650), 'Secured Loan')
-        self.assertEqual(check_loan_eligibility(60000, 500), 'Secured Loan')
+        """Checks if secured loan is granted with medium income and low credit score."""
+        self.assertEqual(check_loan_eligibility(30000, 700), "Secured Loan")
+        self.assertEqual(check_loan_eligibility(45000, 650), "Secured Loan")
+        self.assertEqual(check_loan_eligibility(60000, 500), "Secured Loan")
 
     def test_check_loan_eligibility_with_high_income_high_credit(self):
-        """Check if premium loan is granted with high income and very high credit score, return 'Premium Loan'."""
-        self.assertEqual(check_loan_eligibility(60001, 751), 'Premium Loan')
-        self.assertEqual(check_loan_eligibility(100000, 800), 'Premium Loan')
+        """Check if premium loan is granted with high income and very high credit score"""
+        self.assertEqual(check_loan_eligibility(60001, 751), "Premium Loan")
+        self.assertEqual(check_loan_eligibility(100000, 800), "Premium Loan")
 
     def test_check_loan_eligibility_with_high_income_medium_credit(self):
-        """Check if standard loan is granted with high income but medium credit score, returns 'Standard Loan'"""
-        self.assertEqual(check_loan_eligibility(60001, 750), 'Standard Loan')
-        self.assertEqual(check_loan_eligibility(100000, 700), 'Standard Loan')
-        self.assertEqual(check_loan_eligibility(80000, 600), 'Standard Loan')
+        """Check if standard loan is granted with high income but medium credit score."""
+        self.assertEqual(check_loan_eligibility(60001, 750), "Standard Loan")
+        self.assertEqual(check_loan_eligibility(100000, 700), "Standard Loan")
+        self.assertEqual(check_loan_eligibility(80000, 600), "Standard Loan")
 
 
 class TestWhiteBoxCalculateShippingCost(unittest.TestCase):
@@ -757,7 +760,7 @@ class TestWhiteBoxCalculateShippingCost(unittest.TestCase):
 
     def test_calculate_shipping_cost_with_medium_package(self):
         """Check shipping cost for medium package."""
-        self.assertEqual(calculate_shipping_cost(5, 30 ,30 ,30), 10)
+        self.assertEqual(calculate_shipping_cost(5, 30, 30, 30), 10)
 
     def test_calculate_shipping_cost_with_large_package(self):
         """Check shipping cost for large package."""
@@ -765,7 +768,7 @@ class TestWhiteBoxCalculateShippingCost(unittest.TestCase):
 
     def test_calculate_shipping_cost_with_mixed_dimensions(self):
         """Check shipping cost when some dimensions are in different categories."""
-        self.assertEqual(calculate_shipping_cost(2, 10, 15, 20),20)
+        self.assertEqual(calculate_shipping_cost(2, 10, 15, 20), 20)
 
 
 class TestWhiteBoxGradeQuiz(unittest.TestCase):
@@ -774,11 +777,11 @@ class TestWhiteBoxGradeQuiz(unittest.TestCase):
     # Test cases 19 = "grade_quiz(correct_answers, incorrect_answers)"
     def test_grade_quiz_with_pass(self):
         """Check if quiz passes with sufficient correct answer and few incorrect answer."""
-        self.assertEqual(grade_quiz(7,2), 'Pass')
+        self.assertEqual(grade_quiz(7, 2), "Pass")
 
     def test_grade_quiz_with_conditional_pass(self):
         """Check if quiz gets conditional pass with moderate correct answers and few incorrect"""
-        self.assertEqual(grade_quiz(5, 3), 'Conditional Pass')
+        self.assertEqual(grade_quiz(5, 3), "Conditional Pass")
 
     def test_grade_quiz_with_fail(self):
         """Check if quiz fails with insufficient correct answers or too many incorrect answers."""
@@ -791,15 +794,15 @@ class TestWhiteBoxAuthenticateUser(unittest.TestCase):
     # Test cases 20 = "authenticate_user(username, password)"
     def test_authenticate_user_with_admin_credentials(self):
         """Check Authentication with admin credentials."""
-        self.assertEqual(authenticate_user('admin','admin123'), 'Admin')
+        self.assertEqual(authenticate_user("admin", "admin123"), "Admin")
 
     def test_authenticate_user_with_valid_user_credentials(self):
         """Checks autentication with valid user credentials."""
-        self.assertEqual(authenticate_user("username", "password123"), 'User')
+        self.assertEqual(authenticate_user("username", "password123"), "User")
 
     def test_authenticate_user_with_invalid_credentials(self):
         """Checks authentication with invalid credentials."""
-        self.assertEqual(authenticate_user("user", "pass"), 'Invalid')
+        self.assertEqual(authenticate_user("user", "pass"), "Invalid")
 
 
 class TestWhiteBoxGetWeatherAdvisory(unittest.TestCase):
@@ -808,17 +811,21 @@ class TestWhiteBoxGetWeatherAdvisory(unittest.TestCase):
     # Test cases 21 = "get_weather_advisory(temperature, humidity)"
     def test_get_weather_advisory_with_high_temperature_and_humidity(self):
         """Check weather advisory for high temperature and humidity"""
-        self.assertEqual(get_weather_advisory(31,71), 'High Temperature and Humidity. Stay Hydrated.')
+        self.assertEqual(
+            get_weather_advisory(31, 71),
+            "High Temperature and Humidity. Stay Hydrated.",
+        )
 
     def test_get_weather_advisory_with_low_temperature(self):
         """Check weather advisory for low temperature."""
-        self.assertEqual(get_weather_advisory(-1, 50), 'Low Temperature. Bundle Up!')
+        self.assertEqual(get_weather_advisory(-1, 50), "Low Temperature. Bundle Up!")
 
     def test_get_weather_advisory_with_no_specific_condition(self):
         """Check weather advisory for normal conditions."""
-        self.assertEqual(get_weather_advisory(20,50), "No Specific Advisory")
+        self.assertEqual(get_weather_advisory(20, 50), "No Specific Advisory")
 
-#22
+
+# 22
 class TestWhiteBoxVendingMachine(unittest.TestCase):
     """
     Vending Machine unit tests.
@@ -863,27 +870,27 @@ class TestWhiteBoxTrafficLight(unittest.TestCase):
     def test_traffic_light_initial_state(self):
         """Check if traffic light initializes in 'Red' State"""
         light = TrafficLight()
-        self.assertEqual(light.get_current_state(), 'Red')
+        self.assertEqual(light.get_current_state(), "Red")
 
     def test_traffic_light_change_state_from_red(self):
         """Check state change behaivor when in 'Red' State"""
         light = TrafficLight()
         light.change_state()
-        self.assertEqual(light.get_current_state(), 'Green')
+        self.assertEqual(light.get_current_state(), "Green")
 
     def test_traffic_light_change_state_from_green(self):
         """Check state change behaivor when in 'Green' state"""
         light = TrafficLight()
-        light.state = 'Green'
+        light.state = "Green"
         light.change_state()
-        self.assertEqual(light.get_current_state(),'Yellow')
+        self.assertEqual(light.get_current_state(), "Yellow")
 
     def test_traffic_light_change_state_from_yellow(self):
         """Check state change behaivor when in 'Yellow' State."""
         light = TrafficLight()
-        light.state = 'Yellow'
+        light.state = "Yellow"
         light.change_state()
-        self.assertEqual(light.get_current_state(),'Red')
+        self.assertEqual(light.get_current_state(), "Red")
 
 
 class TestWhiteBoxUserAuthentication(unittest.TestCase):
@@ -893,33 +900,33 @@ class TestWhiteBoxUserAuthentication(unittest.TestCase):
     def test_user_authentication_initial_state(self):
         """Check if user Authentication initializes in 'Logged Out' state."""
         auth = UserAuthentication()
-        self.assertEqual(auth.state, 'Logged Out')
+        self.assertEqual(auth.state, "Logged Out")
 
     def test_user_authentication_login_when_logged_out(self):
-        """Check login behaivor when in 'Logged Out'state. """
+        """Check login behaivor when in 'Logged Out'state."""
         auth = UserAuthentication()
-        self.assertEqual(auth.login(), 'Login successful')
-        self.assertEqual(auth.login(), 'Invalid operation in current state')
+        self.assertEqual(auth.login(), "Login successful")
+        self.assertEqual(auth.login(), "Invalid operation in current state")
 
     def test_user_authentication_login_when_logged_in(self):
         """Check login behavior when in 'Logged In' state."""
         auth = UserAuthentication()
-        auth.state = 'Logged In'
-        self.assertEqual(auth.logout(), 'Invalid operation in current state')
-        self.assertEqual(auth.logout(), 'Logged In')
+        auth.state = "Logged In"
+        self.assertEqual(auth.login(), "Invalid operation in current state")
+        self.assertEqual(auth.state, "Logged In")
 
     def test_user_authentication_logout_when_logged_in(self):
         """Check logout behavior when in 'Logged In" state."""
         auth = UserAuthentication()
         auth.state = "Logged In"
-        self.assertEqual(auth.logout(), 'Logout successful')
-        self.assertEqual(auth.state, 'Logged Out')
+        self.assertEqual(auth.logout(), "Logout successful")
+        self.assertEqual(auth.state, "Logged Out")
 
     def test_user_authentication_logout_when_logged_out(self):
         """Check logout behavior when in 'Logged Out' state."""
         auth = UserAuthentication()
-        self.assertEqual(auth.logout(), 'Invalid operation in current state')
-        self.assertEqual(auth.state, 'Logged Out')
+        self.assertEqual(auth.logout(), "Invalid operation in current state")
+        self.assertEqual(auth.state, "Logged Out")
 
 
 class TestWhiteBoxDocumentEditingSystem(unittest.TestCase):
@@ -927,13 +934,32 @@ class TestWhiteBoxDocumentEditingSystem(unittest.TestCase):
 
     # Test cases 25 = "DocumentEditingSystem"
     def test_document_editing_system_initial_state(self):
-        """Check if document editing system initializes in 'Editing'state. """
-        document = DocumentEditingSystem
-        self.assertEqual(document.state, 'Editing')
+        """Check if document editing system initializes in 'Editing'state."""
+        document = DocumentEditingSystem()
+        self.assertEqual(document.state, "Editing")
+
+    def test_document_editing_system_save_when_editing(self):
+        """Check save_Document behavior when in 'Editing' state."""
+        document = DocumentEditingSystem()
+        self.assertEqual(document.save_document(), "Document saved successfully")
+        self.assertEqual(document.state, "Saved")
 
     def test_document_editing_system_save_when_saved(self):
         """Check save_document behavior when in 'Saved' state."""
-        document = DocumentEditingSystem
-        document.state = 'Saved'
+        document = DocumentEditingSystem()
+        document.state = "Saved"
         self.assertEqual(document.save_document(), "Invalid operation in current state")
         self.assertEqual(document.state, "Saved")
+
+    def test_document_editing_system_edit_when_saved(self):
+        """Check edit_document behavior when in  'Saved' state."""
+        document = DocumentEditingSystem()
+        document.state = "Saved"
+        self.assertEqual(document.edit_document(), "Editing resumed")
+        self.assertEqual(document.state, "Editing")
+
+    def test_document_editing_system_edit_when_editing(self):
+        """Check edit_document behavior when in 'Editing' state."""
+        document = DocumentEditingSystem()
+        self.assertEqual(document.edit_document(), "Invalid operation in current state")
+        self.assertEqual(document.state, "Editing")
