@@ -26,6 +26,7 @@ from src.white_box import (
     check_flight_eligibility,
     validate_url,
     calculate_quantity_discount,
+    check_file_size,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -681,6 +682,27 @@ class TestWhiteBoxCalculateQuantityDiscount(unittest.TestCase):
     def test_calculate_quantity_discount_large_discount_minimum(self):
         """Checks if quantity at minimum for 10% discount (11) returns '10% Discount'."""
         self.assertEqual(calculate_quantity_discount(11), '10% Discount')
+
+
+class TestWhiteBoxCheckFileSize(unittest.TestCase):
+    """White-box unittest class - #16 check_file_size(size_in_bytes)."""
+
+    #Test cases 16 = "check_file_size(size_in_bytes)"
+    def test_check_file_size_zero(self):
+        """Checks if zero bytes returns 'Valid File Size'."""
+        self.assertEqual(check_file_size(0), 'Valid File Size')
+
+    def test_check_file_size_max(self):
+        """Checks if maximum allowed size (1 MB) returns 'Valid File Size'."""
+        self.assertEqual(check_file_size(1048576), 'Valid File Size')
+
+    def test_check_file_size_exceeded(self):
+        """Checks if supported maximum allowe size (+1MB) returns 'Invalid File Size'."""
+        self.assertEqual(check_file_size(1048577), 'Invalid File Size')
+
+    def test_check_file_size_negative(self):
+        """Checks if negative size returns 'Invalid File Size'."""
+        self.assertEqual(check_file_size(-1), "Invalid File Size")
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
