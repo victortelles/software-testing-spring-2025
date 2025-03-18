@@ -31,6 +31,7 @@ from src.white_box import (
     calculate_shipping_cost,
     grade_quiz,
     authenticate_user,
+    get_weather_advisory,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -796,6 +797,25 @@ class TestWhiteBoxAuthenticateUser(unittest.TestCase):
     def test_authenticate_user_with_invalid_credentials(self):
         """Checks authentication with invalid credentials."""
         self.assertEqual(authenticate_user("user", "pass"), 'Invalid')
+
+
+class TestWhiteBoxGetWeatherAdvisory(unittest.TestCase):
+    """White-box unittest class - #21 get_weather_advisory(temperature, humidity)."""
+
+    # Test cases 21 = "get_weather_advisory(temperature, humidity)"
+    def test_get_weather_advisory_with_high_temperature_and_humidity(self):
+        """Check weather advisory for high temperature and humidity"""
+        self.assertEqual(get_weather_advisory(31,71), 'High Temperature and Humidity. Stay Hydrated.')
+
+    def test_get_weather_advisory_with_low_temperature(self):
+        """Check weather advisory for low temperature."""
+        self.assertEqual(get_weather_advisory(-1, 50), 'Low Temperature. Bundle Up!')
+
+    def test_get_weather_advisory_with_no_specific_condition(self):
+        """Check weather advisory for normal conditions."""
+        self.assertEqual(get_weather_advisory(20,50), "No Specific Advisory")
+
+
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
