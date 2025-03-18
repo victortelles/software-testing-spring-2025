@@ -12,6 +12,7 @@ from src.white_box import (  # BankingSystem,
     DocumentEditingSystem,
     ElevatorSystem,
     Product,
+    ShoppingCart,
     TrafficLight,
     UserAuthentication,
     VendingMachine,
@@ -1068,3 +1069,65 @@ class TestWhiteBoxProduct(unittest.TestCase):
                 fake_stdout.getvalue(), "The product Phone has a price of 500\n"
             )
             self.assertEqual(return_value, "The product Phone has a price of 500")
+
+
+class TestWhiteBoxShoppingCart(unittest.TestCase):
+    """White-box unittest class - #30 ShoppingCart."""
+
+    # Test cases 30 = "ShoppingCart"
+    def setUp(self):
+        """Set up test environment before each test"""
+        self.cart = ShoppingCart()
+        self.product1 = Product("Laptop", 1000)
+        self.product2 = Product("Phone", 50)
+
+    def test_shopping_cart_initialization(self):
+        """Check if shopping cart initializes with empty items list"""
+        self.assertEqual(self.cart.items, [])
+
+    def test_shopping_cart_add_new_product(self):
+        """Check adding a new product to the cart"""
+        self.cart.add_product(self.product1)
+        self.assertEqual(len(self.cart.items), 1)
+        self.assertEqual(self.cart.items[0]["product"], self.product1)
+        self.assertEqual(self.cart.items[0]["quantity"], 1)
+
+    def test_shopping_cart_add_existing_prodcut(self):
+        """Check adding more of an existing product"""
+        self.cart.add_product(self.product1)
+        self.cart.add_product(self.product1, 2)
+        self.assertEqual(len(self.cart.items), 1)
+        self.assertEqual(self.cart.items[0]["quantity"], 3)
+
+    def test_shopping_cart_remove_product_completely(self):
+        """Check removing a product completely"""
+        self.cart.add_product(self.product1, 2)
+        self.cart.remove_product(self.product1, 2)
+        self.assertEqual(len(self.cart.items), 0)
+
+    def test_shopping_cart_remove_product_partially(self):
+        """Check removing some quantity of a product."""
+        self.cart.add_product(self.product1, 3)
+        self.cart.remove_product(self.product1, 1)
+        self.assertEqual(len(self.cart.items), 1)
+        self.assertEqual(self.cart.items[0]["quantity"], 2)
+
+    def test_shopping_cart_view_cart(self):
+        """Check view_cart output"""
+        self.cart.add_product(self.product1, 2)
+        self.cart.add_product(self.product2, 1)
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            self.cart.view_cart()
+            output = fake_stdout.getvalue()
+            self.assertIn("2 x Laptop - $2000", output)
+            self.assertIn("1 x Phone - $50", output)
+
+    def test_shopping_cart_checkout(self):
+        """Check checkout calculation and output."""
+        self.cart.add_product(self.product1, 1)
+        self.cart.add_product(self.product2, 2)
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            self.cart.checkout()
+            output = fake_stdout.getvalue()
+            self.assertIn("Total: $1100", output)
+            self.assertIn("Checkout completed", output)
