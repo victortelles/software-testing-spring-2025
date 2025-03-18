@@ -6,7 +6,6 @@ White-box unit testing examples.
 import unittest
 
 from src.white_box import (
-    VendingMachine,
     calculate_items_shipping_cost,
     calculate_order_total,
     calculate_total_discount,
@@ -32,6 +31,8 @@ from src.white_box import (
     grade_quiz,
     authenticate_user,
     get_weather_advisory,
+    VendingMachine,
+    TrafficLight,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -815,9 +816,7 @@ class TestWhiteBoxGetWeatherAdvisory(unittest.TestCase):
         """Check weather advisory for normal conditions."""
         self.assertEqual(get_weather_advisory(20,50), "No Specific Advisory")
 
-
-
-
+#22
 class TestWhiteBoxVendingMachine(unittest.TestCase):
     """
     Vending Machine unit tests.
@@ -853,3 +852,35 @@ class TestWhiteBoxVendingMachine(unittest.TestCase):
 
         self.assertEqual(self.vending_machine.state, "Dispensing")
         self.assertEqual(output, "Coin Inserted. Select your drink.")
+
+
+class TestWhiteBoxTrafficLight(unittest.TestCase):
+    """White-box unittest class - #22 TrafficLight."""
+
+    # Test cases 21 = "TrafficLight"
+    def test_traffic_light_initial_state(self):
+        """Check if traffic light initializes in 'Red' State"""
+        light = TrafficLight()
+        self.assertEqual(light.get_current_state(), 'Red')
+
+    def test_traffic_light_change_state_from_red(self):
+        """Check state change behaivor when in 'Red' State"""
+        light = TrafficLight()
+        light.change_state()
+        self.assertEqual(light.get_current_state(), 'Green')
+
+    def test_traffic_light_change_state_from_green(self):
+        """Check state change behaivor when in 'Green' state"""
+        light = TrafficLight()
+        light.state = 'Green'
+        light.change_state()
+        self.assertEqual(light.get_current_state(),'Yellow')
+
+    def test_traffic_light_change_state_from_yellow(self):
+        """Check state change behaivor when in 'Yellow' State."""
+        light = TrafficLight()
+        light.state = 'Yellow'
+        light.change_state()
+        self.assertEqual(light.get_current_state(),'Red')
+
+
