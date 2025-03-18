@@ -3,9 +3,12 @@
 """
 White-box unit testing examples.
 """
+import io
 import unittest
+from unittest import mock
 
 from src.white_box import (
+    BankAccount,
     DocumentEditingSystem,
     ElevatorSystem,
     TrafficLight,
@@ -1015,3 +1018,24 @@ class TestWhiteBoxElevatorSystem(unittest.TestCase):
         self.assertEqual(elevator.move_up(), "Invalid operation in current state")
         elevator.state = "Moving Down"
         self.assertEqual(elevator.move_up(), "Invalid operation in current state")
+
+
+# pylint: disable=too-few-public-methods
+class TestWhiteBoxBankAccount(unittest.TestCase):
+    """White-box unittest class - #27 BankAccount."""
+
+    # Test cases 27 = "BankAccount"
+    def test_bank_account_initialization(self):
+        """Check if bank account initializes with correct values."""
+        account = BankAccount("12345", 1000)
+        self.assertEqual(account.account_number, "12345")
+        self.assertEqual(account.balance, 1000)
+
+    def test_bank_account_view_account(self):
+        """Check view_Account output using mock."""
+        account = BankAccount("67890", 500)
+        with mock.patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            account.view_account()
+            self.assertEqual(
+                fake_stdout.getvalue().strip(), "The account 67890 has a balance of 500"
+            )
