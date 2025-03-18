@@ -23,6 +23,7 @@ from src.white_box import (
     validate_password,
     verify_age,
     validate_date,
+    check_flight_eligibility,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -585,6 +586,16 @@ class TestWhiteBoxValidateDate(unittest.TestCase):
     def test_validate_date_day_boundary_max(self):
         """Checks if day at upper boundary (31) returns 'Valid Date. """
         self.assertEqual(validate_date(2000, 5, 31), "Valid Date")
+
+
+class TestWhiteBoxCheckFlightEligibility(unittest.TestCase):
+    """White-box unittest class - #13 check_flight_eligibility(age, frequent_flyer)."""
+    # Test cases 12 = "validate_date(date_string)"
+
+    def test_check_flight_eligible_age_not_frequent_flyer(self):
+        """Checks if eligible age (18-65) but not frequent flyer returns 'Eligible to Book'."""
+        self.assertEqual(check_flight_eligibility(30, False), 'Eligible to Book')
+
 
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
