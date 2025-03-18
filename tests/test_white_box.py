@@ -28,6 +28,7 @@ from src.white_box import (
     calculate_quantity_discount,
     check_file_size,
     check_loan_eligibility,
+    calculate_shipping_cost,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -731,7 +732,7 @@ class TestWhiteBoxCheckLoanEligibility(unittest.TestCase):
     def test_check_loan_eligibility_with_high_income_high_credit(self):
         """Check if premium loan is granted with high income and very high credit score, return 'Premium Loan'."""
         self.assertEqual(check_loan_eligibility(60001, 751), 'Premium Loan')
-        self.assertEqual(check_loan_eligibility(10000, 800), 'Premium Loan')
+        self.assertEqual(check_loan_eligibility(100000, 800), 'Premium Loan')
 
     def test_check_loan_eligibility_with_high_income_medium_credit(self):
         """Check if standard loan is granted with high income but medium credit score, returns 'Standard Loan'"""
@@ -740,6 +741,25 @@ class TestWhiteBoxCheckLoanEligibility(unittest.TestCase):
         self.assertEqual(check_loan_eligibility(80000, 600), 'Standard Loan')
 
 
+class TestWhiteBoxCalculateShippingCost(unittest.TestCase):
+    """White-box unittest class - #18 check_loan_eligibility(income, credit_score)."""
+
+    # Test cases 18 = "calculate_shipping_cost(weight, length, width, height)"
+    def test_calculate_shipping_cost_with_smalal_package(self):
+        """Check shipping cost for small package"""
+        self.assertEqual(calculate_shipping_cost(1, 10, 10, 10), 5)
+
+    def test_calculate_shipping_cost_with_medium_package(self):
+        """Check shipping cost for medium package."""
+        self.assertEqual(calculate_shipping_cost(5, 30 ,30 ,30), 10)
+
+    def test_calculate_shipping_cost_with_large_package(self):
+        """Check shipping cost for large package."""
+        self.assertEqual(calculate_shipping_cost(6, 31, 31, 31), 20)
+
+    def test_calculate_shipping_cost_with_mixed_dimensions(self):
+        """Check shipping cost when some dimensions are in different categories."""
+        self.assertEqual(calculate_shipping_cost(2, 10, 15, 20),20)
 
 
 
