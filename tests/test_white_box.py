@@ -649,13 +649,13 @@ class TestWhiteBoxValidateURL(unittest.TestCase):
 
     def test_validate_url_max_lenght(self):
         """Checks if URL at maximum length (255) returns 'Valid URL'."""
-        max_url = "http://"+"a" * 248 + ".com"
+        max_url = "http://"+"a" * 244 + ".com"
         self.assertEqual(validate_url(max_url), 'Valid URL')
-    
+
     def test_validate_url_empty(self):
         """Checks if empty string returns 'Invalid URL'."""
         self.assertEqual(validate_url(""), 'Invalid URL')
-        
+
 
 
 
