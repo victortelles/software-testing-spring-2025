@@ -29,6 +29,7 @@ from src.white_box import (
     check_file_size,
     check_loan_eligibility,
     calculate_shipping_cost,
+    grade_quiz,
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
@@ -760,6 +761,23 @@ class TestWhiteBoxCalculateShippingCost(unittest.TestCase):
     def test_calculate_shipping_cost_with_mixed_dimensions(self):
         """Check shipping cost when some dimensions are in different categories."""
         self.assertEqual(calculate_shipping_cost(2, 10, 15, 20),20)
+
+
+class TestWhiteBoxGradeQuiz(unittest.TestCase):
+    """White-box unittest class - #18 check_loan_eligibility(income, credit_score)."""
+
+    # Test cases 19 = "grade_quiz(correct_answers, incorrect_answers)"
+    def test_grade_quiz_with_pass(self):
+        """Check if quiz passes with sufficient correct answer and few incorrect answer."""
+        self.assertEqual(grade_quiz(7,2), 'Pass')
+
+    def test_grade_quiz_with_conditional_pass(self):
+        """Check if quiz gets conditional pass with moderate correct answers and few incorrect"""
+        self.assertEqual(grade_quiz(5, 3), 'Conditional Pass')
+
+    def test_grade_quiz_with_fail(self):
+        """Check if quiz fails with insufficient correct answers or too many incorrect answers."""
+        self.assertEqual(grade_quiz(4, 4), "Fail")
 
 
 
