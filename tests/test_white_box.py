@@ -42,7 +42,6 @@ from src.white_box import (
     validate_password,
     validate_url,
     verify_age,
-)
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
 
@@ -158,7 +157,6 @@ class TestWhiteBoxTriangle(unittest.TestCase):
         """Checks behaivor when one side is zero"""
         self.assertEqual(is_triangle(0, 4, 5), "No, it's not a triangle.")
 
-
 class TestWhiteBoxCheckNum(unittest.TestCase):
     """White-box unittest class."""
 
@@ -186,7 +184,6 @@ class TestWhiteBoxCheckNum(unittest.TestCase):
 
 class TestWhiteBoxValidatePass(unittest.TestCase):
     """White-box unittest class - #2 Validate_password."""
-
     # Test cases 2 = "validate_password(password)"
     def test_validate_password_valid(self):
         """Checks if a valid password thats meets all requerimetns returns True."""
@@ -223,7 +220,6 @@ class TestWhiteBoxValidatePass(unittest.TestCase):
     def test_validate_password_with_invalid_special_char(self):
         """Checks if a password with special characters not in the required set returns False."""
         self.assertFalse(validate_password("Password1*"))
-
 
 class TestWhiteBoxCalculatorTotalDiscount(unittest.TestCase):
     """White-box unittest class - #3 Calculator_total_discount."""
@@ -830,7 +826,6 @@ class TestWhiteBoxGetWeatherAdvisory(unittest.TestCase):
     def test_get_weather_advisory_with_no_specific_condition(self):
         """Check weather advisory for normal conditions."""
         self.assertEqual(get_weather_advisory(20, 50), "No Specific Advisory")
-
 
 class TestWhiteBoxVendingMachine(unittest.TestCase):
     """White-box unittest class - class for Vending Machine."""
