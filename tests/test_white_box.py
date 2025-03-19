@@ -44,8 +44,6 @@ from src.white_box import (
     verify_age,
 )
 
-# from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
-
 
 class TestWhiteBoxIsEven(unittest.TestCase):
     """White-box unittest class."""
