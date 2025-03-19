@@ -8,7 +8,6 @@ import unittest
 from unittest import mock
 
 from src.white_box import (
-
     BankAccount,
     BankingSystem,
     DocumentEditingSystem,
@@ -46,6 +45,7 @@ from src.white_box import (
 )
 
 # from src.white_box import VendingMachine, divide, get_grade, is_even, is_triangle
+
 
 class TestWhiteBoxIsEven(unittest.TestCase):
     """White-box unittest class."""
@@ -184,7 +184,6 @@ class TestWhiteBoxCheckNum(unittest.TestCase):
         self.assertEqual(check_number_status(0), "Zero")
 
 
-
 class TestWhiteBoxValidatePass(unittest.TestCase):
     """White-box unittest class - #2 Validate_password."""
 
@@ -224,7 +223,6 @@ class TestWhiteBoxValidatePass(unittest.TestCase):
     def test_validate_password_with_invalid_special_char(self):
         """Checks if a password with special characters not in the required set returns False."""
         self.assertFalse(validate_password("Password1*"))
-
 
 
 class TestWhiteBoxCalculatorTotalDiscount(unittest.TestCase):
@@ -1170,14 +1168,12 @@ class TestWhiteBoxShoppingCart(unittest.TestCase):
         self.assertEqual(self.cart.items[0]["product"], self.product1)
         self.assertEqual(self.cart.items[0]["quantity"], 1)
 
-
     def test_shopping_cart_add_existing_prodcut(self):
         """Check adding more of an existing product"""
         self.cart.add_product(self.product1)
         self.cart.add_product(self.product1, 2)
         self.assertEqual(len(self.cart.items), 1)
         self.assertEqual(self.cart.items[0]["quantity"], 3)
-
 
     def test_shopping_cart_remove_product_completely(self):
         """Check removing a product completely"""
@@ -1192,7 +1188,6 @@ class TestWhiteBoxShoppingCart(unittest.TestCase):
         self.assertEqual(len(self.cart.items), 1)
         self.assertEqual(self.cart.items[0]["quantity"], 2)
 
-
     def test_shopping_cart_view_cart(self):
         """Check view_cart output"""
         self.cart.add_product(self.product1, 2)
@@ -1202,7 +1197,6 @@ class TestWhiteBoxShoppingCart(unittest.TestCase):
             output = fake_stdout.getvalue()
             self.assertIn("2 x Laptop - $2000", output)
             self.assertIn("1 x Phone - $50", output)
-
 
     def test_shopping_cart_checkout(self):
         """Check checkout calculation and output."""
